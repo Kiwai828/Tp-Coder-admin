@@ -6,7 +6,7 @@ class AppConstants {
   static const String socketUrl = 'https://coder.recapmaker.online';
 
   static const String githubClientId = 'Ov23li3xZkOXrn6LrEU3';
-  static const String githubRedirectUri = 'tpcoder://github-callback';
+  static const String githubRedirectUri = 'https://coder.recapmaker.online/api/auth/github/callback';
 
   static const int maxFileSizeMB = 20;
   static const int freeRequestsPerDay = 20;

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -52,15 +53,48 @@ class AuthProvider extends ChangeNotifier {
   void _handleDeepLink(Uri? uri) {
     if (uri == null) return;
     if (uri.scheme == 'tpcoder' && uri.host == 'github-callback') {
-      final code = uri.queryParameters['code'];
-      if (code != null) {
+      final token = uri.queryParameters['token'];
+      final userJson = uri.queryParameters['user'];
+      final error = uri.queryParameters['error'];
+
+      if (error != null) {
+        // GitHub auth failed
         if (_githubCodeCompleter != null && !_githubCodeCompleter!.isCompleted) {
-          _githubCodeCompleter!.complete(code);
+          _githubCodeCompleter!.completeError(error);
+        }
+        return;
+      }
+
+      if (token != null) {
+        // Server already exchanged code → we have token + user directly
+        if (_githubCodeCompleter != null && !_githubCodeCompleter!.isCompleted) {
+          _githubCodeCompleter!.complete(token);
         } else {
-          signInWithGithub(code);
+          // Auto-login with token
+          _handleGithubToken(token, userJson);
         }
       }
     }
+  }
+
+  Future<void> _handleGithubToken(String token, String? userJson) async {
+    await _api.setToken(token);
+    if (userJson != null) {
+      try {
+        final decoded = Uri.decodeComponent(userJson);
+        final userMap = Map<String, dynamic>.from(
+          const JsonCodec().decode(decoded),
+        );
+        _user = UserModel.fromJson(userMap);
+      } catch (_) {
+        await _refreshUser();
+      }
+    } else {
+      await _refreshUser();
+    }
+    _isLoggedIn = true;
+    _connectSocket();
+    notifyListeners();
   }
 
   @override
@@ -124,25 +158,28 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  /// Launch GitHub OAuth and wait for the code via deep link, then auto sign-in
+  /// Launch GitHub OAuth and wait for token via deep link, then auto sign-in
   Future<bool> launchGithubOAuthAndSignIn() async {
     _isLoading = true; _error = null; notifyListeners();
     try {
       _githubCodeCompleter = Completer<String?>();
       await launchGithubOAuth();
-      // Wait for deep link callback (timeout 120s)
-      final code = await _githubCodeCompleter!.future.timeout(
+      // Wait for deep link callback with token (timeout 120s)
+      final token = await _githubCodeCompleter!.future.timeout(
         const Duration(seconds: 120),
         onTimeout: () => null,
       );
       _githubCodeCompleter = null;
-      if (code == null) {
+      if (token == null) {
         _isLoading = false; _error = 'GitHub sign in cancelled or timed out'; notifyListeners();
         return false;
       }
-      // Now sign in with the code
+      // Token received from server — set it and fetch user
+      await _api.setToken(token);
+      await _refreshUser();
+      _isLoggedIn = true; _connectSocket();
       _isLoading = false; notifyListeners();
-      return await signInWithGithub(code);
+      return true;
     } catch (e) {
       _githubCodeCompleter = null;
       _isLoading = false; _error = 'GitHub sign in error: ${e.toString().split('\n').first}'; notifyListeners();
@@ -150,18 +187,20 @@ class AuthProvider extends ChangeNotifier {
     }
   }
 
-  /// Launch GitHub OAuth and wait for code, then connect account (from Settings)
+  /// Launch GitHub OAuth and wait for token, then connect account (from Settings)
   Future<bool> launchGithubOAuthAndConnect() async {
     try {
       _githubCodeCompleter = Completer<String?>();
       await launchGithubOAuth();
-      final code = await _githubCodeCompleter!.future.timeout(
+      final token = await _githubCodeCompleter!.future.timeout(
         const Duration(seconds: 120),
         onTimeout: () => null,
       );
       _githubCodeCompleter = null;
-      if (code == null) return false;
-      return await connectGithub(code);
+      if (token == null) return false;
+      // Token means server already connected GitHub — just refresh user
+      await _refreshUser();
+      return _user?.githubConnected ?? false;
     } catch (_) {
       _githubCodeCompleter = null;
       return false;
