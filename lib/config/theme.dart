@@ -54,7 +54,7 @@ class AppTheme {
         titleTextStyle: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: AppColors.darkText),
         iconTheme: IconThemeData(color: AppColors.darkText),
       ),
-      cardTheme: CardTheme(
+      cardTheme: CardThemeData(
         color: AppColors.darkSurface,
         elevation: 0,
         shape: RoundedRectangleBorder(
@@ -83,7 +83,7 @@ class AppTheme {
       ),
       textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(foregroundColor: AppColors.primaryLight)),
       dividerTheme: const DividerThemeData(color: AppColors.darkBorder, thickness: 1, space: 0),
-      dialogTheme: DialogTheme(backgroundColor: AppColors.darkSurface, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24))),
+      dialogTheme: DialogThemeData(backgroundColor: AppColors.darkSurface, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24))),
     );
   }
 
