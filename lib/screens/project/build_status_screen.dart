@@ -38,7 +38,7 @@ class _BuildStatusScreenState extends State<BuildStatusScreen> {
             decoration: BoxDecoration(color: AppColors.darkSurface, borderRadius: BorderRadius.circular(16), border: Border.all(color: AppColors.darkBorder)),
             child: Column(children: [
               Container(width: 64, height: 64, decoration: BoxDecoration(
-                color: _build!.isSuccess ? AppColors.accentGreen.withOpacity(0.12) : _build!.isFailed ? AppColors.accentRed.withOpacity(0.12) : AppColors.accentYellow.withOpacity(0.12),
+                color: _build!.isSuccess ? AppColors.accentGreen.withValues(alpha: 0.12) : _build!.isFailed ? AppColors.accentRed.withValues(alpha: 0.12) : AppColors.accentYellow.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(20)),
                 child: Icon(_build!.isSuccess ? Icons.check_circle : _build!.isFailed ? Icons.error : Icons.hourglass_top, size: 32,
                   color: _build!.isSuccess ? AppColors.accentGreen : _build!.isFailed ? AppColors.accentRed : AppColors.accentYellow)),

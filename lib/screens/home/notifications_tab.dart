@@ -73,7 +73,7 @@ class _NotificationsTabState extends State<NotificationsTab> {
       key: Key(n.id),
       direction: DismissDirection.endToStart,
       background: Container(alignment: Alignment.centerRight, padding: const EdgeInsets.only(right: 20), margin: const EdgeInsets.only(bottom: 8),
-        decoration: BoxDecoration(color: AppColors.accentRed.withOpacity(0.15), borderRadius: BorderRadius.circular(14)),
+        decoration: BoxDecoration(color: AppColors.accentRed.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(14)),
         child: const Icon(Icons.delete_outline, color: AppColors.accentRed)),
       onDismissed: (_) {
         final removedNotif = n;
@@ -107,9 +107,9 @@ class _NotificationsTabState extends State<NotificationsTab> {
         child: Container(
       margin: const EdgeInsets.only(bottom: 8),
       padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(color: n.isRead ? AppColors.darkSurface : AppColors.primary.withOpacity(0.06), borderRadius: BorderRadius.circular(14), border: Border.all(color: n.isRead ? AppColors.darkBorder : AppColors.primary.withOpacity(0.2))),
+      decoration: BoxDecoration(color: n.isRead ? AppColors.darkSurface : AppColors.primary.withValues(alpha: 0.06), borderRadius: BorderRadius.circular(14), border: Border.all(color: n.isRead ? AppColors.darkBorder : AppColors.primary.withValues(alpha: 0.2))),
       child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Container(width: 38, height: 38, decoration: BoxDecoration(color: color.withOpacity(0.12), borderRadius: BorderRadius.circular(10)),
+        Container(width: 38, height: 38, decoration: BoxDecoration(color: color.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(10)),
           child: Icon(icon, size: 18, color: color)),
         const SizedBox(width: 12),
         Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

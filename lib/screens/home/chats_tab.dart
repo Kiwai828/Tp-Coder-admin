@@ -29,7 +29,7 @@ class _ChatsTabState extends State<ChatsTab> {
           : ListView.builder(itemCount: prov.generalChats.length, itemBuilder: (ctx, i) {
               final c = prov.generalChats[i];
               return Dismissible(key: Key(c.id), direction: DismissDirection.endToStart,
-                background: Container(alignment: Alignment.centerRight, padding: const EdgeInsets.only(right: 20), color: AppColors.accentRed.withOpacity(0.2), child: const Icon(Icons.delete, color: AppColors.accentRed)),
+                background: Container(alignment: Alignment.centerRight, padding: const EdgeInsets.only(right: 20), color: AppColors.accentRed.withValues(alpha: 0.2), child: const Icon(Icons.delete, color: AppColors.accentRed)),
                 onDismissed: (_) => prov.deleteChat(c.id),
                 child: InkWell(onTap: () => Navigator.pushNamed(context, '/chat', arguments: c.id),
                   child: Container(padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14), decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: AppColors.darkBorder))),

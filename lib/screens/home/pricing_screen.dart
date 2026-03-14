@@ -96,7 +96,7 @@ class _PricingScreenState extends State<PricingScreen> {
           Text(price, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w800, color: AppColors.primaryLight)),
         ]),
         if (current) Container(margin: const EdgeInsets.only(top: 8), padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-          decoration: BoxDecoration(color: AppColors.primary.withOpacity(0.15), borderRadius: BorderRadius.circular(8)),
+          decoration: BoxDecoration(color: AppColors.primary.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(8)),
           child: const Text('CURRENT PLAN', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: AppColors.primaryLight))),
         const SizedBox(height: 12),
         for (final f in features) Padding(padding: const EdgeInsets.only(bottom: 6),

@@ -54,10 +54,10 @@ class _ProjectDetailScreenState extends State<ProjectDetailScreen> {
           child: ListView(padding: const EdgeInsets.all(16), children: [
             // Project info
             Row(children: [
-              Container(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4), decoration: BoxDecoration(color: AppColors.accent.withOpacity(0.12), borderRadius: BorderRadius.circular(8)),
+              Container(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4), decoration: BoxDecoration(color: AppColors.accent.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(8)),
                 child: Text(project.framework, style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppColors.accent))),
               const SizedBox(width: 8),
-              Container(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4), decoration: BoxDecoration(color: AppColors.primary.withOpacity(0.12), borderRadius: BorderRadius.circular(8)),
+              Container(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4), decoration: BoxDecoration(color: AppColors.primary.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(8)),
                 child: Text(project.type.toUpperCase(), style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppColors.primaryLight))),
               const SizedBox(width: 8),
               StatusBadge(status: project.status),
@@ -115,7 +115,7 @@ class _ProjectDetailScreenState extends State<ProjectDetailScreen> {
                 onLongPress: () => _chatActions(c),
                 child: Container(margin: const EdgeInsets.only(bottom: 8), decoration: BoxDecoration(color: AppColors.darkSurface, borderRadius: BorderRadius.circular(12), border: Border.all(color: AppColors.darkBorder)),
                   child: ListTile(contentPadding: const EdgeInsets.symmetric(horizontal: 14),
-                    leading: Container(width: 36, height: 36, decoration: BoxDecoration(color: AppColors.primaryLight.withOpacity(0.1), borderRadius: BorderRadius.circular(10)),
+                    leading: Container(width: 36, height: 36, decoration: BoxDecoration(color: AppColors.primaryLight.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10)),
                       child: const Icon(Icons.chat_bubble_outline, size: 16, color: AppColors.primaryLight)),
                     title: Text(c.title, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
                     subtitle: c.lastMessage != null ? Text(c.lastMessage!, style: const TextStyle(fontSize: 11, color: AppColors.darkTextMuted), maxLines: 1, overflow: TextOverflow.ellipsis) : null,

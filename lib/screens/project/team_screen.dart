@@ -29,7 +29,7 @@ class _TeamScreenState extends State<TeamScreen> {
             decoration: BoxDecoration(color: AppColors.darkSurface, borderRadius: BorderRadius.circular(14), border: Border.all(color: AppColors.darkBorder)),
             child: Row(children: [
               Stack(children: [
-                Container(width: 44, height: 44, decoration: BoxDecoration(color: AppColors.primaryLight.withOpacity(0.15), borderRadius: BorderRadius.circular(14)),
+                Container(width: 44, height: 44, decoration: BoxDecoration(color: AppColors.primaryLight.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(14)),
                   child: Center(child: Text(m.displayName.isNotEmpty ? m.displayName[0].toUpperCase() : '?', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: AppColors.primaryLight)))),
                 Positioned(bottom: 0, right: 0, child: Container(width: 12, height: 12, decoration: BoxDecoration(color: m.isOnline ? AppColors.accentGreen : AppColors.darkTextMuted, shape: BoxShape.circle, border: Border.all(color: AppColors.darkSurface, width: 2)))),
               ]),
@@ -38,7 +38,7 @@ class _TeamScreenState extends State<TeamScreen> {
                 Text(m.displayName, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
                 const SizedBox(height: 2),
                 Container(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2), decoration: BoxDecoration(
-                  color: m.isOwner ? AppColors.accentYellow.withOpacity(0.12) : AppColors.primary.withOpacity(0.12), borderRadius: BorderRadius.circular(10)),
+                  color: m.isOwner ? AppColors.accentYellow.withValues(alpha: 0.12) : AppColors.primary.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(10)),
                   child: Text(m.role.toUpperCase(), style: TextStyle(fontSize: 9, fontWeight: FontWeight.w700, color: m.isOwner ? AppColors.accentYellow : AppColors.primaryLight))),
               ])),
               if (!m.isOwner) PopupMenuButton(icon: const Icon(Icons.more_vert, size: 18, color: AppColors.darkTextMuted), itemBuilder: (_) => [
@@ -62,7 +62,7 @@ class _TeamScreenState extends State<TeamScreen> {
           for (final r in ['editor', 'viewer']) ...[
             Expanded(child: GestureDetector(onTap: () => setState2(() => role = r),
               child: Container(padding: const EdgeInsets.symmetric(vertical: 10),
-                decoration: BoxDecoration(color: role == r ? AppColors.primary.withOpacity(0.12) : AppColors.darkBg, borderRadius: BorderRadius.circular(10), border: Border.all(color: role == r ? AppColors.primary : AppColors.darkBorder)),
+                decoration: BoxDecoration(color: role == r ? AppColors.primary.withValues(alpha: 0.12) : AppColors.darkBg, borderRadius: BorderRadius.circular(10), border: Border.all(color: role == r ? AppColors.primary : AppColors.darkBorder)),
                 child: Center(child: Text(r.toUpperCase(), style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: role == r ? AppColors.primaryLight : AppColors.darkTextMuted)))))),
             if (r == 'editor') const SizedBox(width: 8),
           ],

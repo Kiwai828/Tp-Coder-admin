@@ -27,7 +27,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
           for (final t in [('feedback', 'Feedback', Icons.feedback_outlined), ('bug', 'Bug Report', Icons.bug_report_outlined), ('feature', 'Feature', Icons.lightbulb_outline)]) ...[
             Expanded(child: GestureDetector(onTap: () => setState(() => _type = t.$1),
               child: Container(padding: const EdgeInsets.symmetric(vertical: 12), decoration: BoxDecoration(
-                color: _type == t.$1 ? AppColors.primary.withOpacity(0.12) : AppColors.darkSurface, borderRadius: BorderRadius.circular(12),
+                color: _type == t.$1 ? AppColors.primary.withValues(alpha: 0.12) : AppColors.darkSurface, borderRadius: BorderRadius.circular(12),
                 border: Border.all(color: _type == t.$1 ? AppColors.primary : AppColors.darkBorder, width: _type == t.$1 ? 2 : 1)),
                 child: Column(children: [Icon(t.$3, size: 20, color: _type == t.$1 ? AppColors.primaryLight : AppColors.darkTextMuted), const SizedBox(height: 4),
                   Text(t.$2, style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: _type == t.$1 ? AppColors.primaryLight : AppColors.darkTextMuted))])))),

@@ -40,7 +40,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
     return Scaffold(body: SafeArea(child: SingleChildScrollView(padding: const EdgeInsets.symmetric(horizontal: 24), child: Consumer<AuthProvider>(builder: (ctx, auth, _) {
       return Column(children: [
         const SizedBox(height: 40),
-        Container(width: 56, height: 56, decoration: BoxDecoration(gradient: AppColors.primaryGradient, borderRadius: BorderRadius.circular(18), boxShadow: [BoxShadow(color: AppColors.primary.withOpacity(0.3), blurRadius: 30, offset: const Offset(0, 8))]),
+        Container(width: 56, height: 56, decoration: BoxDecoration(gradient: AppColors.primaryGradient, borderRadius: BorderRadius.circular(18), boxShadow: [BoxShadow(color: AppColors.primary.withValues(alpha: 0.3), blurRadius: 30, offset: const Offset(0, 8))]),
           child: const Icon(Icons.code_rounded, color: Colors.white, size: 28)),
         const SizedBox(height: 12),
         const Text('TP Coder', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w800)),
@@ -74,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> with SingleTickerProviderStat
 
         // Error
         if (auth.error != null) Container(width: double.infinity, padding: const EdgeInsets.all(12), margin: const EdgeInsets.only(bottom: 16),
-          decoration: BoxDecoration(color: AppColors.accentRed.withOpacity(0.1), borderRadius: BorderRadius.circular(12), border: Border.all(color: AppColors.accentRed.withOpacity(0.3))),
+          decoration: BoxDecoration(color: AppColors.accentRed.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(12), border: Border.all(color: AppColors.accentRed.withValues(alpha: 0.3))),
           child: Row(children: [const Icon(Icons.error_outline, color: AppColors.accentRed, size: 18), const SizedBox(width: 8), Expanded(child: Text(auth.error!, style: const TextStyle(color: AppColors.accentRed, fontSize: 13)))])),
 
         // Form

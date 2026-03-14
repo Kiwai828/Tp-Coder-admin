@@ -157,7 +157,7 @@ class _LivePreviewScreenState extends State<LivePreviewScreen> {
             const Expanded(child: Text('preview://localhost', style: TextStyle(fontSize: 12, color: AppColors.darkTextMuted, fontFamily: 'monospace'))),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-              decoration: BoxDecoration(color: AppColors.accentGreen.withOpacity(0.12), borderRadius: BorderRadius.circular(4)),
+              decoration: BoxDecoration(color: AppColors.accentGreen.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(4)),
               child: const Text('LIVE', style: TextStyle(fontSize: 9, fontWeight: FontWeight.w700, color: AppColors.accentGreen)),
             ),
           ]),
@@ -174,7 +174,7 @@ class _LivePreviewScreenState extends State<LivePreviewScreen> {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(_isDesktop ? 0 : 12),
                 border: _isDesktop ? null : Border.all(color: AppColors.darkBorder),
-                boxShadow: _isDesktop ? null : [BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 20, offset: const Offset(0, 8))],
+                boxShadow: _isDesktop ? null : [BoxShadow(color: Colors.black.withValues(alpha: 0.3), blurRadius: 20, offset: const Offset(0, 8))],
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(_isDesktop ? 0 : 12),

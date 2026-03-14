@@ -52,7 +52,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 const SizedBox(height: 2), Text(u?.email ?? '', style: const TextStyle(fontSize: 12, color: AppColors.darkTextMuted)),
                 const SizedBox(height: 2), Text(tr('edit_profile'), style: const TextStyle(fontSize: 11, color: AppColors.primaryLight)),
               ])),
-              Container(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4), decoration: BoxDecoration(color: AppColors.primary.withOpacity(0.15), borderRadius: BorderRadius.circular(20)),
+              Container(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4), decoration: BoxDecoration(color: AppColors.primary.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(20)),
                 child: Text((u?.plan ?? 'Free').toUpperCase(), style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: AppColors.primaryLight))),
             ])));
       }),

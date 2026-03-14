@@ -89,7 +89,7 @@ class _ChatScreenState extends State<ChatScreen> {
         Expanded(child: prov.isLoading ? const Center(child: CircularProgressIndicator(color: AppColors.primary))
           : prov.messages.isEmpty
             ? Center(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Icon(Icons.chat_bubble_outline, size: 48, color: AppColors.darkTextMuted.withOpacity(0.3)),
+                Icon(Icons.chat_bubble_outline, size: 48, color: AppColors.darkTextMuted.withValues(alpha: 0.3)),
                 const SizedBox(height: 12),
                 const Text('Start a conversation', style: TextStyle(fontSize: 14, color: AppColors.darkTextMuted)),
               ]))
@@ -287,12 +287,12 @@ class _ChatScreenState extends State<ChatScreen> {
               else { ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Upgrade to ${m.userGroup.toUpperCase()} plan'), action: SnackBarAction(label: 'Upgrade', onPressed: () => Navigator.pushNamed(context, '/pricing')))); }
             },
             child: Container(margin: const EdgeInsets.only(bottom: 6), padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(color: selected ? AppColors.primary.withOpacity(0.08) : Colors.transparent, borderRadius: BorderRadius.circular(12), border: Border.all(color: selected ? AppColors.primary : AppColors.darkBorder)),
+              decoration: BoxDecoration(color: selected ? AppColors.primary.withValues(alpha: 0.08) : Colors.transparent, borderRadius: BorderRadius.circular(12), border: Border.all(color: selected ? AppColors.primary : AppColors.darkBorder)),
               child: Row(children: [
                 Icon(selected ? Icons.radio_button_checked : Icons.radio_button_off, size: 20, color: selected ? AppColors.primary : AppColors.darkTextMuted),
                 const SizedBox(width: 12),
                 Expanded(child: Text(m.displayName, style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: canUse ? AppColors.darkText : AppColors.darkTextMuted))),
-                Container(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3), decoration: BoxDecoration(color: gc.withOpacity(0.12), borderRadius: BorderRadius.circular(6)),
+                Container(padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3), decoration: BoxDecoration(color: gc.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(6)),
                   child: Text(m.userGroup.toUpperCase(), style: TextStyle(fontSize: 9, fontWeight: FontWeight.w700, color: gc))),
                 if (!canUse) ...[const SizedBox(width: 6), const Icon(Icons.lock, size: 14, color: AppColors.darkTextMuted)],
               ])),
@@ -307,7 +307,7 @@ class _ChatScreenState extends State<ChatScreen> {
     showModalBottomSheet(context: context, backgroundColor: AppColors.darkSurface,
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       builder: (_) => Padding(padding: const EdgeInsets.all(16), child: Column(mainAxisSize: MainAxisSize.min, children: [
-        ListTile(leading: Container(width: 40, height: 40, decoration: BoxDecoration(color: AppColors.accent.withOpacity(0.12), borderRadius: BorderRadius.circular(10)),
+        ListTile(leading: Container(width: 40, height: 40, decoration: BoxDecoration(color: AppColors.accent.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(10)),
           child: const Icon(Icons.image, size: 20, color: AppColors.accent)),
           title: const Text('Image'), subtitle: const Text('Send for analysis', style: TextStyle(fontSize: 12, color: AppColors.darkTextMuted)),
           onTap: () async {
@@ -319,7 +319,7 @@ class _ChatScreenState extends State<ChatScreen> {
             } catch (e) { if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: ${e.toString().split('\n').first}'))); }
           }),
         const Divider(color: AppColors.darkBorder),
-        ListTile(leading: Container(width: 40, height: 40, decoration: BoxDecoration(color: AppColors.accentYellow.withOpacity(0.12), borderRadius: BorderRadius.circular(10)),
+        ListTile(leading: Container(width: 40, height: 40, decoration: BoxDecoration(color: AppColors.accentYellow.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(10)),
           child: const Icon(Icons.camera_alt, size: 20, color: AppColors.accentYellow)),
           title: const Text('Camera'), subtitle: const Text('Take a photo', style: TextStyle(fontSize: 12, color: AppColors.darkTextMuted)),
           onTap: () async {
@@ -331,7 +331,7 @@ class _ChatScreenState extends State<ChatScreen> {
             } catch (e) { if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Error: ${e.toString().split('\n').first}'))); }
           }),
         const Divider(color: AppColors.darkBorder),
-        ListTile(leading: Container(width: 40, height: 40, decoration: BoxDecoration(color: AppColors.accentGreen.withOpacity(0.12), borderRadius: BorderRadius.circular(10)),
+        ListTile(leading: Container(width: 40, height: 40, decoration: BoxDecoration(color: AppColors.accentGreen.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(10)),
           child: const Icon(Icons.description, size: 20, color: AppColors.accentGreen)),
           title: const Text('File'), subtitle: const Text('Send for review', style: TextStyle(fontSize: 12, color: AppColors.darkTextMuted)),
           onTap: () async {
@@ -457,7 +457,7 @@ class _AiBubble extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 12, right: 32),
       child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Container(width: 28, height: 28, decoration: BoxDecoration(color: AppColors.accent.withOpacity(0.15), borderRadius: BorderRadius.circular(8)),
+        Container(width: 28, height: 28, decoration: BoxDecoration(color: AppColors.accent.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(8)),
           child: const Icon(Icons.smart_toy, size: 16, color: AppColors.accent)),
         const SizedBox(width: 8),
         Flexible(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -471,7 +471,7 @@ class _AiBubble extends StatelessWidget {
               final action = f['action'] ?? 'create';
               final color = action == 'delete' ? AppColors.accentRed : action == 'edit' ? AppColors.accentYellow : AppColors.accentGreen;
               return Container(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                decoration: BoxDecoration(color: color.withOpacity(0.1), borderRadius: BorderRadius.circular(8), border: Border.all(color: color.withOpacity(0.3))),
+                decoration: BoxDecoration(color: color.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(8), border: Border.all(color: color.withValues(alpha: 0.3))),
                 child: Row(mainAxisSize: MainAxisSize.min, children: [
                   Icon(action == 'delete' ? Icons.remove_circle_outline : action == 'edit' ? Icons.edit_outlined : Icons.add_circle_outline, size: 12, color: color),
                   const SizedBox(width: 4),
@@ -492,7 +492,7 @@ class _TypingBubble extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(margin: const EdgeInsets.only(bottom: 12, right: 48),
       child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Container(width: 28, height: 28, decoration: BoxDecoration(color: AppColors.accent.withOpacity(0.15), borderRadius: BorderRadius.circular(8)),
+        Container(width: 28, height: 28, decoration: BoxDecoration(color: AppColors.accent.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(8)),
           child: const Icon(Icons.smart_toy, size: 16, color: AppColors.accent)),
         const SizedBox(width: 8),
         Flexible(child: Container(padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
@@ -504,7 +504,7 @@ class _TypingBubble extends StatelessWidget {
                 Text(code!, style: const TextStyle(fontSize: 12, fontFamily: 'monospace', color: AppColors.darkTextSecondary)),
               ])
             : Row(mainAxisSize: MainAxisSize.min, children: [
-                SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.accent.withOpacity(0.5))),
+                SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.accent.withValues(alpha: 0.5))),
                 const SizedBox(width: 8),
                 const Text('AI is thinking...', style: TextStyle(fontSize: 13, color: AppColors.darkTextMuted)),
               ]),

@@ -53,7 +53,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
         child: AnimatedBuilder(animation: _ctrl, builder: (context, child) {
           return Opacity(opacity: _fade.value, child: Transform.scale(scale: _scale.value, child: Column(mainAxisSize: MainAxisSize.min, children: [
             Container(width: 80, height: 80,
-              decoration: BoxDecoration(gradient: AppColors.primaryGradient, borderRadius: BorderRadius.circular(24), boxShadow: [BoxShadow(color: AppColors.primary.withOpacity(0.4), blurRadius: 40, offset: const Offset(0, 10))]),
+              decoration: BoxDecoration(gradient: AppColors.primaryGradient, borderRadius: BorderRadius.circular(24), boxShadow: [BoxShadow(color: AppColors.primary.withValues(alpha: 0.4), blurRadius: 40, offset: const Offset(0, 10))]),
               child: const Icon(Icons.code_rounded, color: Colors.white, size: 40)),
             const SizedBox(height: 20),
             const Text('TP Coder', style: TextStyle(fontSize: 28, fontWeight: FontWeight.w800, color: AppColors.darkText, letterSpacing: -0.5)),

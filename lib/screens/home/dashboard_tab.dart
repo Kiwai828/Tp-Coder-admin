@@ -67,12 +67,12 @@ class _DashboardTabState extends State<DashboardTab> {
                 decoration: BoxDecoration(
                   gradient: AppColors.primaryGradient,
                   borderRadius: BorderRadius.circular(14),
-                  boxShadow: [BoxShadow(color: AppColors.primary.withOpacity(0.25), blurRadius: 12, offset: const Offset(0, 4))],
+                  boxShadow: [BoxShadow(color: AppColors.primary.withValues(alpha: 0.25), blurRadius: 12, offset: const Offset(0, 4))],
                 ),
                 child: Row(children: [
                   // Points
                   Container(width: 40, height: 40,
-                    decoration: BoxDecoration(color: Colors.white.withOpacity(0.2), borderRadius: BorderRadius.circular(12)),
+                    decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(12)),
                     child: const Icon(Icons.star_rounded, color: Colors.white, size: 22)),
                   const SizedBox(width: 12),
                   Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -80,7 +80,7 @@ class _DashboardTabState extends State<DashboardTab> {
                       Text('${u.pointsBalance.toStringAsFixed(0)} pts', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800, color: Colors.white)),
                       const SizedBox(width: 8),
                       Container(padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                        decoration: BoxDecoration(color: Colors.white.withOpacity(0.2), borderRadius: BorderRadius.circular(6)),
+                        decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(6)),
                         child: Text(u.plan.toUpperCase(), style: const TextStyle(fontSize: 9, fontWeight: FontWeight.w700, color: Colors.white))),
                     ]),
                     const SizedBox(height: 6),
@@ -137,7 +137,7 @@ class _DashboardTabState extends State<DashboardTab> {
       child: Container(margin: const EdgeInsets.only(bottom: 8), padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(color: AppColors.darkSurface, borderRadius: BorderRadius.circular(14), border: Border.all(color: AppColors.darkBorder)),
         child: Row(children: [
-          Container(width: 44, height: 44, decoration: BoxDecoration(color: AppColors.primary.withOpacity(0.12), borderRadius: BorderRadius.circular(12)),
+          Container(width: 44, height: 44, decoration: BoxDecoration(color: AppColors.primary.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(12)),
             child: Icon(typeIcon, size: 22, color: AppColors.primaryLight)),
           const SizedBox(width: 12),
           Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -201,7 +201,7 @@ class _DashboardTabState extends State<DashboardTab> {
               Expanded(child: Padding(padding: const EdgeInsets.only(right: 8), child: GestureDetector(
                 onTap: () => setS(() { type = t.$1; framework = t.$1 == 'website' ? 'HTML/CSS/JS' : t.$1 == 'android' ? 'Kotlin' : 'Swift'; }),
                 child: Container(padding: const EdgeInsets.symmetric(vertical: 12),
-                  decoration: BoxDecoration(color: type == t.$1 ? AppColors.primary.withOpacity(0.12) : AppColors.darkSurface, borderRadius: BorderRadius.circular(12),
+                  decoration: BoxDecoration(color: type == t.$1 ? AppColors.primary.withValues(alpha: 0.12) : AppColors.darkSurface, borderRadius: BorderRadius.circular(12),
                     border: Border.all(color: type == t.$1 ? AppColors.primary : AppColors.darkBorder)),
                   child: Column(children: [Icon(t.$2, size: 20, color: type == t.$1 ? AppColors.primaryLight : AppColors.darkTextMuted), const SizedBox(height: 4),
                     Text(t.$3, style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: type == t.$1 ? AppColors.primaryLight : AppColors.darkTextMuted))]))))),

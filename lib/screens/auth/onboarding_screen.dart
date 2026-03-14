@@ -42,7 +42,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             final p = _pages[i];
             return Padding(padding: const EdgeInsets.all(40), child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               Container(width: 100, height: 100,
-                decoration: BoxDecoration(color: p.color.withOpacity(0.12), borderRadius: BorderRadius.circular(30)),
+                decoration: BoxDecoration(color: p.color.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(30)),
                 child: Icon(p.icon, size: 48, color: p.color)),
               const SizedBox(height: 40),
               Text(p.title, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w800), textAlign: TextAlign.center),
