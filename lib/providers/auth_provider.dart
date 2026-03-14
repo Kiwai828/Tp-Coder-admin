@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:app_links/app_links.dart';
 import '../models/models.dart';
 import '../services/api_service.dart';
 import '../services/socket_service.dart';
@@ -12,7 +12,8 @@ class AuthProvider extends ChangeNotifier {
   final ApiService _api = ApiService();
   final SocketService _socket = SocketService();
   final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email', 'profile']);
-  late final AppLinks _appLinks;
+  static const _deepLinkChannel = MethodChannel('com.builder.tpo/deeplink');
+  static const _deepLinkEvents = EventChannel('com.builder.tpo/deeplink_events');
   StreamSubscription? _linkSub;
   Completer<String?>? _githubCodeCompleter;
 
@@ -31,28 +32,31 @@ class AuthProvider extends ChangeNotifier {
     _initDeepLinks();
   }
 
-  // === Deep Link Handling ===
+  // === Deep Link Handling (no external package needed) ===
   void _initDeepLinks() {
-    _appLinks = AppLinks();
-    // Handle link when app is already running
-    _linkSub = _appLinks.uriLinkStream.listen((Uri uri) {
-      _handleDeepLink(uri);
-    });
-    // Handle initial link (app opened via link)
-    _appLinks.getInitialLink().then((uri) {
-      if (uri != null) _handleDeepLink(uri);
-    });
+    // Listen for deep links via EventChannel (when app is running)
+    try {
+      _linkSub = _deepLinkEvents.receiveBroadcastStream().listen((dynamic link) {
+        if (link is String) _handleDeepLink(Uri.tryParse(link));
+      }, onError: (_) {});
+    } catch (_) {
+      // EventChannel not available — fallback: check initial link only
+    }
+
+    // Check initial deep link (app cold start via link)
+    _deepLinkChannel.invokeMethod<String>('getInitialLink').then((link) {
+      if (link != null) _handleDeepLink(Uri.tryParse(link));
+    }).catchError((_) {});
   }
 
-  void _handleDeepLink(Uri uri) {
+  void _handleDeepLink(Uri? uri) {
+    if (uri == null) return;
     if (uri.scheme == 'tpcoder' && uri.host == 'github-callback') {
       final code = uri.queryParameters['code'];
       if (code != null) {
-        // If we have a pending completer (login/connect flow), complete it
         if (_githubCodeCompleter != null && !_githubCodeCompleter!.isCompleted) {
           _githubCodeCompleter!.complete(code);
         } else {
-          // Auto-process the code (e.g. user opened link from browser)
           signInWithGithub(code);
         }
       }
