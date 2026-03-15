@@ -29,9 +29,13 @@ class ChatProvider extends ChangeNotifier {
   bool _aiTyping = false;
   String? _currentCode;
   String? _currentFileName;
+  String _searchQuery = '';
   List<Map<String, dynamic>> _lastFileOps = [];
 
   List<ChatModel> get generalChats => _generalChats;
+  String get searchQuery => _searchQuery;
+  List<ChatModel> get filteredChats => _searchQuery.isEmpty ? _generalChats
+    : _generalChats.where((c) => c.title.toLowerCase().contains(_searchQuery.toLowerCase()) || (c.lastMessage?.toLowerCase().contains(_searchQuery.toLowerCase()) ?? false)).toList();
   ChatModel? get currentChat => _currentChat;
   List<MessageModel> get messages => _messages;
   List<FileModel> get chatFiles => _chatFiles;
@@ -56,6 +60,12 @@ class ChatProvider extends ChangeNotifier {
   }
 
   void selectModel(String modelId) { _selectedModelId = modelId; notifyListeners(); }
+
+  void setSearchQuery(String q) { _searchQuery = q; notifyListeners(); }
+
+  String getExportUrl(String chatId) => '${AppConstants.baseUrl}${ApiEndpoints.chatExport(chatId)}';
+
+  Future<String?> getExportToken() async => await _api.token;
 
   // === Chats ===
   Future<void> fetchGeneralChats() async {
@@ -243,6 +253,11 @@ class ChatProvider extends ChangeNotifier {
   }
 
   // === File Upload ===
+  bool _isUploadingZip = false;
+  String _zipUploadStatus = '';
+  bool get isUploadingZip => _isUploadingZip;
+  String get zipUploadStatus => _zipUploadStatus;
+
   Future<void> uploadFile(String filePath, String fileName) async {
     if (_currentChat == null) return;
     _isSending = true; notifyListeners();
@@ -283,6 +298,84 @@ class ChatProvider extends ChangeNotifier {
     }
 
     _isSending = false; notifyListeners();
+  }
+
+  /// Upload a ZIP file → backend extracts, fixes structure, adds to file tree
+  Future<void> uploadZip(String filePath, String fileName) async {
+    if (_currentChat == null) return;
+    _isUploadingZip = true;
+    _zipUploadStatus = 'Uploading ZIP...';
+    notifyListeners();
+
+    try {
+      final token = await _api.token;
+      final uri = Uri.parse('${AppConstants.baseUrl}${ApiEndpoints.chatUploadZip(_currentChat!.id)}');
+      final request = http.MultipartRequest('POST', uri);
+      if (token != null) request.headers['Authorization'] = 'Bearer $token';
+      request.files.add(await http.MultipartFile.fromPath('file', filePath, filename: fileName));
+
+      _zipUploadStatus = 'Extracting & analyzing...';
+      notifyListeners();
+
+      final streamResp = await request.send();
+      final respStr = await streamResp.stream.bytesToString();
+      final resp = jsonDecode(respStr);
+
+      if (resp['success'] == true && resp['data'] != null) {
+        final data = resp['data'];
+        final extractedCount = data['extractedCount'] ?? 0;
+        final fixedCount = data['fixedCount'] ?? 0;
+        final skippedFiles = data['skippedFiles'] as List? ?? [];
+
+        // Add system message showing what happened
+        final sb = StringBuffer();
+        sb.writeln('📦 **ZIP Extracted:** $extractedCount files added to project');
+        if (fixedCount > 0) sb.writeln('🔧 **Structure fixed:** $fixedCount files reorganized');
+        if (skippedFiles.isNotEmpty) sb.writeln('⚠️ **Skipped:** ${skippedFiles.join(', ')}');
+
+        // If AI analyzed and gave a message
+        if (data['aiMessage'] != null) {
+          var msg = MessageModel.fromJson(data['aiMessage']);
+          msg = _cleanAiResponse(msg);
+          _messages.add(msg);
+        } else {
+          _messages.add(MessageModel(
+            id: DateTime.now().millisecondsSinceEpoch.toString(),
+            chatId: _currentChat!.id,
+            role: 'ai',
+            content: sb.toString(),
+            createdAt: DateTime.now(),
+          ));
+        }
+
+        // Track file ops
+        final files = data['files'];
+        if (files is List && files.isNotEmpty) {
+          _lastFileOps = files.map((f) => Map<String, dynamic>.from(f)).toList();
+        }
+
+        // Refresh files
+        await refreshFiles();
+      } else {
+        _messages.add(MessageModel(
+          id: '${DateTime.now().millisecondsSinceEpoch}_err',
+          chatId: _currentChat!.id, role: 'ai',
+          content: resp['message'] ?? 'ZIP upload failed',
+          createdAt: DateTime.now(),
+        ));
+      }
+    } catch (e) {
+      _messages.add(MessageModel(
+        id: '${DateTime.now().millisecondsSinceEpoch}_err',
+        chatId: _currentChat!.id, role: 'ai',
+        content: 'ZIP upload error: ${e.toString().split('\n').first}',
+        createdAt: DateTime.now(),
+      ));
+    }
+
+    _isUploadingZip = false;
+    _zipUploadStatus = '';
+    notifyListeners();
   }
 
   Future<bool> deleteChat(String chatId) async {

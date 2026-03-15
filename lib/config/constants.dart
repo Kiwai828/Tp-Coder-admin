@@ -65,10 +65,12 @@ class ApiEndpoints {
   static String chatMessages(String id) => '/chats/$id/messages';
   static String chatDetail(String id) => '/chats/$id';
   static String chatUpload(String id) => '/chats/$id/upload';
+  static String chatUploadZip(String id) => '/chats/$id/upload-zip';
   static String projectFiles(String id) => '/files/project/$id';
   static String fileContent(String id) => '/files/$id/content';
   static String fileRename(String id) => '/files/$id/rename';
   static String fileDelete(String id) => '/files/$id';
+  static String chatExport(String id) => '/chats/$id/export-zip';
   static const String authMe = '/auth/me';
   static const String githubCreateRepo = '/github/create-repo';
   static String githubPush(String id) => '/github/push/$id';
